@@ -12,7 +12,7 @@ async function seed() {
   });
 
   const hashedPassword = await bcrypt.hash("kodylovesyou", 10);
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       email,
       password: {
@@ -22,6 +22,32 @@ async function seed() {
       },
     },
   });
+
+  const posts = [
+    {
+      slug: "my-first-post",
+      title: "My First Post",
+      body: "This is my first post",
+    },
+    {
+      slug: "90s-mixtape",
+      title: "A Mixtape I Made Just For You",
+      body: "This is a mixtape I made just for you",
+    },
+  ];
+
+  for (const post of posts) {
+    await prisma.post.create({
+      data: {
+        ...post,
+        author: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
+  }
 
   console.log(`Database has been seeded. 🌱`);
 }
