@@ -36,6 +36,7 @@ const inputClassName = `w-full rounded border border-gray-500 px-2 py-1 text-lg`
 export default function NewPost() {
   const errors = useActionData<typeof action>();
   const transition = useTransition();
+
   const isSubmitting = Boolean(transition.submission);
 
   return (
