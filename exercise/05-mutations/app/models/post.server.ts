@@ -1,3 +1,4 @@
+import { Post } from "@prisma/client";
 import { prisma } from "~/db.server";
 
 export async function getPostListItems() {
@@ -11,6 +12,8 @@ export async function getPost(slug: string) {
 // 🐨 export a new function called createPost which accepts a title, slug, and markdown
 // and returns the newly created post.
 
-// 💰 Here's an example of how you use prisma to create a new record:
-// prisma.dogo.create({ data: { name: "Good Dogo" } });
-// in our case, that'll be prisma.post.create
+export const createPost = async (
+  args: Pick<Post, "slug" | "title" | "markdown">,
+) => {
+  return prisma.post.create({ data: args });
+};
