@@ -4,9 +4,11 @@ import {
   Form,
   useActionData,
   useLoaderData,
+  useParams,
   useTransition,
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import { ErrorFallback } from "~/components";
 
 import {
   createPost,
@@ -64,6 +66,17 @@ export async function action({ request, params }: ActionArgs) {
 }
 
 const inputClassName = `w-full rounded border border-gray-500 px-2 py-1 text-lg`;
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  const { slug } = useParams();
+
+  return (
+    <ErrorFallback>
+      <p>Something went wrong for the post with slug {slug} in admin</p>
+      <pre>{error.message}</pre>
+    </ErrorFallback>
+  );
+};
 
 export default function PostAdmin() {
   const data = useLoaderData<typeof loader>();
@@ -151,6 +164,3 @@ export default function PostAdmin() {
     </Form>
   );
 }
-
-// 🐨 Add an ErrorBoundary component to this
-// 💰 You can use the ErrorFallback component from "~/components"

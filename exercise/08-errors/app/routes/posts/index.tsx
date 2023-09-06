@@ -1,11 +1,21 @@
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { ErrorFallback } from "~/components";
 import { getPostListItems } from "~/models/post.server";
 
 export const loader = async () => {
   return json({
     posts: await getPostListItems(),
   });
+};
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  return (
+    <ErrorFallback>
+      Somethine went wrong with the posts:
+      <pre>{error.message}</pre>
+    </ErrorFallback>
+  );
 };
 
 export default function Posts() {
